@@ -1,0 +1,174 @@
+<tool id="seqprep" name="SeqPrep" version="0.1">
+  <description>merge paired end Illumina reads</description>
+  <requirements>
+    <requirement type="package" version="1.3.2">seqprep</requirement>
+  </requirements>
+  <command>
+    SeqPrep 
+    ## Required arguments
+    -f $f
+    -r $r
+    -1 $one
+    -2 $two
+    ## General arguments
+    #if $save_discarded
+    -3 $three
+    -4 $four
+    #end if
+    #if $f.extension == "fastqsolexa"
+    -6
+    #end if
+    #if $q
+    -q $q
+    #end if
+    #if $L
+    -L $L
+    #end if
+    ## Arguments for Adapter/Primer Trimming (Optional)
+    #if $A
+    -A $A
+    #end if
+    #if $B
+    -B $B
+    #end if
+    #if $extended_options.extended_select
+      #if $extended_options.O
+      -O $extended_options.O
+      #end if
+      #if $extended_options.M
+      -M $extended_options.M
+      #end if
+      #if $extended_options.N
+      -N $extended_options.N
+      #end if
+      #if $extended_options.b
+      -b $extended_options.b
+      #end if
+      #if $extended_options.Q
+      -Q $extended_options.Q
+      #end if
+      #if $extended_options.t
+      -t $extended_options.t
+      #end if
+      #if $extended_options.e
+      -e $extended_options.e
+      #end if
+      #if $extended_options.Z
+      -Z $extended_options.Z
+      #end if
+      #if $extended_options.w
+      -w $extended_options.w
+      #end if
+      #if $extended_options.W
+      -W $extended_options.W
+      #end if
+      #if $extended_options.p
+      -p $extended_options.p
+      #end if
+      #if $extended_options.P
+      -P $extended_options.P
+      #end if
+      #if $extended_options.X
+      -X $extended_options.X
+      #end if
+    #end if
+    ## Optional Arguments for Merging:
+    #if $merge.merge_select
+      #if $merge.y
+      -y $merge.y
+      #end if
+      #if $merge.o
+      -o $merge.o
+      #end if
+      #if $merge.m
+      -m $merge.m
+      #end if
+      #if $merge.n
+      -n $merge.n
+      #end if
+      -s $s 
+      #if $merge.lengths_select
+      &amp;&amp; zcat -f $s | python '$__tool_directory__/seqlens.py'  &gt; $s_lengths
+      #end if
+    #end if
+  </command>
+  <inputs>
+    <param name="f" type="data" format="fastq,fastqillumina,fastqsanger,fastqsolexa" label="Forward reads" />
+    <param name="r" type="data" format="fastq,fastqillumina,fastqsanger,fastqsolexa" label="Reverse reads" />
+    <param name="save_discarded" type="boolean" checked="false" truevalue="True" falsevalue="False" label="Save discarded reads?"/>
+    <param name="A" type="text" value="" optional="true" label="Forward read primer/adapter sequence to trim as it would appear at the end of a read" help="
+default (genomic non-multiplexed adapter1) = AGATCGGAAGAGCGGTTCAG. See help for more details" />
+    <param name="B" type="text" value="" optional="true" label="Reverse read primer/adapter sequence to trim as it would appear at the end of a read" help="
+default (genomic non-multiplexed adapter2) = AGATCGGAAGAGCGTCGTGT. See help for more details" />
+    <param name="q" type="integer" min="1" value="" optional="true" label="Quality score cutoff for mismatches to be counted in overlap" help="Default = 13" />
+    <param name="L" type="integer" min="1" value="" optional="true" label="Minimum length of a trimmed or merged read to print it" help="Default = 30" />
+    <conditional name="extended_options">
+      <param name="extended_select" type="boolean" checked="false" truevalue="True" falsevalue="" label="Show extended options?" />
+      <when value="True">
+	<param name="O" type="integer" min="1" value="" optional="true" label="Minimum overall base pair overlap with adapter sequence to trim" help="Default = 10" />
+	<param name="M" type="float" min="0" max="1" value="" optional="true" label="maximum fraction of good quality mismatching bases for primer/adapter overlap" help="Default = 0.02" />
+	<param name="N" type="float" min="0" max="1" value="" optional="true" label="Minimum fraction of matching bases for primer/adapter overlap" help="Default = 0.87" />
+	<param name="b" type="integer" min="1" value="" optional="true" label="Adapter alignment band-width" help="Default = 50" />
+	<param name="Q" type="integer" min="0" value="" optional="true" label="Adapter alignment gap-open" help="Default = 8" />
+	<param name="t" type="integer" min="0" value="" optional="true" label="Adapter alignment gap-extension" help="Default = 2" />
+	<param name="e" type="integer" min="0" value="" optional="true" label="Adapter alignment gap-end" help="Default = 2" />
+	<param name="Z" type="integer" min="0" value="" optional="true" label="Adapter alignment minimum local alignment score cutoff" help="Roughly (2*num_hits) - (num_gaps*gap_open) - (num_gaps*gap_close) - (gap_len*gap_extend) - (2*num_mismatches)]. Default = 26" />
+	<param name="w" type="integer" min="1" value="" optional="true" label="Read alignment band-width" help="Default = 50" />
+	<param name="W" type="integer" min="0" value="" optional="true" label="Read alignment gap-open" help="Default = 26" />
+	<param name="p" type="integer" min="0" value="" optional="true" label="Read alignment gap-extension" help="Default = 9" />
+	<param name="P" type="integer" min="0" value="" optional="true" label="Read alignment gap-end" help="Default = 5" />
+	<param name="X" type="float" min="0" max="1" value="" optional="true" label="Read alignment maximum fraction gap cutoff" help="Default = 0.125" />
+      </when>
+    </conditional>
+    <conditional name="merge">
+      <param name="merge_select" type="boolean" checked="true" truevalue="True" falsevalue="" label="Merge overlapping reads and output merged reads?" />
+      <when value="True">
+	<param name="y" type="text" value="" optional="true" label="Maximum quality score in merged output" help="In phred 33. Default (']') is 60" />
+	<param name="o" type="integer" min="1" value="" optional="true" label="Minimum overall base pair overlap to merge two reads" help="Default = 15" />
+	<param name="m" type="float" value="" min="0" max="1" optional="true" label="Maximum fraction of good quality mismatching bases to overlap reads" help="Default = 0.02" />
+	<param name="n" type="text" value="" min="0" max="1" optional="true" label="Minimum fraction of matching bases to overlap reads" help="Default = 0.9" />
+	<param name="lengths_select" type="boolean" checked="true" truevalue="True" falsevalue="" label="Output stats of sequence lengths?" />
+      </when>
+      </conditional>
+  </inputs>
+  <outputs>
+    <data name="one" format="fastqsanger" label="${tool.name} on ${on_string}: forward reads" />
+    <data name="two" format="fastqsanger" label="${tool.name} on ${on_string}: reverse reads" />
+    <data name="s" format="fastqsanger" label="${tool.name} on ${on_string}: merged reads"> 
+      <filter>merge["merge_select"] is True</filter>
+    </data>
+    <data name="s_lengths" format="tabular" label="${tool.name} on ${on_string}: histogram of lengths">
+      <filter>merge["lengths_select"] is True</filter>
+    </data>
+    <data name="three" format="fastqsanger" label="${tool.name} on ${on_string}: discarded forward reads"> 
+      <filter>save_discarded is True</filter>
+    </data>
+    <data name="four" format="fastqsanger" label="${tool.name} on ${on_string}: discarded reverse reads"> 
+      <filter>save_discarded is True</filter>
+    </data>
+  </outputs>
+  <stdio>
+    <exit_code range="1:" level="fatal" description="Error" />
+  </stdio>
+  <help>
+**What it does**
+
+SeqPrep is a program to merge paired end Illumina reads that are overlapping into a single longer read. It may also just be used for its adapter trimming feature without doing any paired end overlap. When an adapter sequence is present, that means that the two reads must overlap (in most cases) so they are forcefully merged. When reads do not have adapter sequence they must be treated with care when doing the merging, so a much more specific approach is taken. The default parameters were chosen with specificity in mind, so that they could be ran on libraries where very few reads are expected to overlap. It is always safest though to save the overlapping procedure for libraries where you have some prior knowledge that a significant portion of the reads will have some overlap.
+
+Before running SeqPrep make sure to check that the program's defaults are indeed the adapters you are looking for. Try copying the default forward adapter from this file and grep it against your reads doing a word count, also try the same with the reverse adapter with grep. You should see some hits. You can also try using (and validating with grep) -A GATCGGAAGAGCACACG -B AGATCGGAAGAGCGTCGT as parameters. To find a list of Illumina adapter sequences you should write to Illumina tech support TechSupport@illumina.com (they do not like people to share the list of sequences outside of their institution).
+
+You can also try to search online for Illumina read primers, of course. 
+
+See more details on SeqPrep github repository: https://github.com/jstjohn/SeqPrep
+
+**License**
+
+SeqPrep is copyrighted to John St. John.
+
+This wrapper is copyrighted by Lionel Guy, and is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.  If not, see http://www.gnu.org/licenses/.
+  </help>
+</tool>
