@@ -3,7 +3,7 @@ on: [push, pull_request]
 env:
   GALAXY_FORK: galaxyproject
   GALAXY_BRANCH: release_21.01
-  MAX_CHUNKS: 4
+  MAX_CHUNKS: 1
 jobs:
   # the setup job does two things:
   # 1. cache the pip cache and .planemo
