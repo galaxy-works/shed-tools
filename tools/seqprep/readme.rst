@@ -4,9 +4,9 @@ SeqPrep wrapper
 Version history
 ---------------
 
-- 0.2: Updated version forked by GalaxyWorks - lints with a modern Planemo, adds citation,
-       a simple test case, uses Conda. Fixes issue where the tool states results are uncompressed
-       but they are not actually uncompressed.
+- 0.2.0: Updated version forked by GalaxyWorks - lints with a modern Planemo, adds citation,
+    a simple test case, uses Conda. Fixes issue where the tool states results are uncompressed
+    but they are not actually uncompressed.
 - v0.1: Initial public release in the toolshed, supporting SeqPrep commit 11301c4a5f3222bdb4d0ec30ae5e192e609c0154
 
 Copyright

@@ -1,4 +1,4 @@
-<tool id="seqprep" name="SeqPrep" version="0.1">
+<tool id="seqprep" name="SeqPrep" version="0.2.0">
   <description>merge paired end Illumina reads</description>
   <requirements>
     <requirement type="package" version="1.3.2">seqprep</requirement>
