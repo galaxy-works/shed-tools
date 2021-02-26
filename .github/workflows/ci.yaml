@@ -8,7 +8,7 @@ on:
 env:
   GALAXY_FORK: galaxyproject
   GALAXY_BRANCH: release_21.01
-  MAX_CHUNKS: 40
+  MAX_CHUNKS: 1
 jobs:
   setup:
     name: Setup cache and determine changed repositories
