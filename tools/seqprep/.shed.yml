@@ -2,6 +2,6 @@ name: seqprep
 owner: galaxyworks
 description: SeqPrep is a program to merge paired end Illumina reads that are overlapping into a single longer read.
 homepage_url: https://github.com/jstjohn/SeqPrep
-remote_repository_url: https://github.com/galaxyproject/tools-iuc/tree/master/tools/iqtree/
+remote_repository_url: https://github.com/galaxy-works/shed-tools/tree/main/tools/seqprep
 categories:
   - Sequence Analysis
