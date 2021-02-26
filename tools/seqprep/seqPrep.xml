@@ -2,6 +2,7 @@
   <description>merge paired end Illumina reads</description>
   <requirements>
     <requirement type="package" version="1.3.2">seqprep</requirement>
+    <requirement type="package" version="3.7">python</requirement>
   </requirements>
   <command>
     SeqPrep 
