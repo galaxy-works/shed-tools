@@ -7,17 +7,17 @@
   <stdio>
     <exit_code range="1:" level="fatal" description="Error" />
   </stdio>
-  <command>
+  <command><![CDATA[
     SeqPrep 
     ## Required arguments
-    -f $f
-    -r $r
-    -1 $one
-    -2 $two
+    -f '$f'
+    -r '$r'
+    -1 one.gz
+    -2 two.gz
     ## General arguments
     #if $save_discarded
-    -3 $three
-    -4 $four
+    -3 three.gz
+    -4 four.gz
     #end if
     #if $f.extension == "fastqsolexa"
     -6
@@ -90,12 +90,19 @@
       #if $merge.n
       -n $merge.n
       #end if
-      -s $s 
+      -s merge.gz
       #if $merge.lengths_select
-      &amp;&amp; zcat -f $s | python '$__tool_directory__/seqlens.py'  &gt; $s_lengths
+      && zcat -f merge.gz > '$s'
+      && cat '$s' | python '$__tool_directory__/seqlens.py' > '$s_lengths'
+      #end if
+      && zcat -f one.gz > '$one'
+      && zcat -f two.gz > '$two'
+      #if $save_discarded
+      && zcat -f three.gz > '$three'
+      && zcat -f found.gz > '$four'
       #end if
     #end if
-  </command>
+  ]]></command>
   <inputs>
     <param name="f" type="data" format="fastq,fastqillumina,fastqsanger,fastqsolexa" label="Forward reads" />
     <param name="r" type="data" format="fastq,fastqillumina,fastqsanger,fastqsolexa" label="Reverse reads" />
