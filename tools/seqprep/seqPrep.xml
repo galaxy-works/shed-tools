@@ -4,6 +4,9 @@
     <requirement type="package" version="1.3.2">seqprep</requirement>
     <requirement type="package" version="3.7">python</requirement>
   </requirements>
+  <stdio>
+    <exit_code range="1:" level="fatal" description="Error" />
+  </stdio>
   <command>
     SeqPrep 
     ## Required arguments
@@ -120,6 +123,8 @@ default (genomic non-multiplexed adapter2) = AGATCGGAAGAGCGTCGTGT. See help for 
 	<param name="P" type="integer" min="0" value="" optional="true" label="Read alignment gap-end" help="Default = 5" />
 	<param name="X" type="float" min="0" max="1" value="" optional="true" label="Read alignment maximum fraction gap cutoff" help="Default = 0.125" />
       </when>
+      <when value="">
+      </when>
     </conditional>
     <conditional name="merge">
       <param name="merge_select" type="boolean" checked="true" truevalue="True" falsevalue="" label="Merge overlapping reads and output merged reads?" />
@@ -129,6 +134,8 @@ default (genomic non-multiplexed adapter2) = AGATCGGAAGAGCGTCGTGT. See help for 
 	<param name="m" type="float" value="" min="0" max="1" optional="true" label="Maximum fraction of good quality mismatching bases to overlap reads" help="Default = 0.02" />
 	<param name="n" type="text" value="" min="0" max="1" optional="true" label="Minimum fraction of matching bases to overlap reads" help="Default = 0.9" />
 	<param name="lengths_select" type="boolean" checked="true" truevalue="True" falsevalue="" label="Output stats of sequence lengths?" />
+      </when>
+      <when value="">
       </when>
       </conditional>
   </inputs>
@@ -148,9 +155,17 @@ default (genomic non-multiplexed adapter2) = AGATCGGAAGAGCGTCGTGT. See help for 
       <filter>save_discarded is True</filter>
     </data>
   </outputs>
-  <stdio>
-    <exit_code range="1:" level="fatal" description="Error" />
-  </stdio>
+  <tests>
+    <test>
+      <param name="f" value="read1.fastqsanger" />
+      <param name="r" value="read2.fastqsanger" />
+      <output name="one">
+        <assert_contents>
+          <has_text text="@M05473:M05473:000000000-JD49J:1:1101:10000:10901 1:N:0:TAGGAGCTGCCTTAAC" />
+        </assert_contents>
+      </output>
+    </test>
+  </tests>
   <help>
 **What it does**
 
@@ -172,15 +187,13 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program.  If not, see http://www.gnu.org/licenses/.
   </help>
-  <tests>
-    <test>
-      <param name="f" value="read1.fastqsanger" />
-      <param name="r" value="read2.fastqsanger" />
-      <output name="one">
-        <assert_contents>
-          <has_text_matching expression="shouldfail" />
-        </assert_contents>
-      </output>
-    </test>
-  </tests>
+  <citations>
+    <citation type="bibtex">@online{seqpre,
+  author = {St John, John},
+  title = {seqprep},
+  year = 2016,
+  url = {https://github.com/jstjohn/SeqPrep},
+  urldate = {2016-10-04}
+    }</citation>
+  </citations>
 </tool>
