@@ -195,12 +195,13 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program.  If not, see http://www.gnu.org/licenses/.
   </help>
   <citations>
-    <citation type="bibtex">@online{seqpre,
+    <citation type="bibtex">
+@online{seqpre,
   author = {St John, John},
   title = {seqprep},
   year = 2016,
   url = {https://github.com/jstjohn/SeqPrep},
   urldate = {2016-10-04}
-    }</citation>
+}</citation>
   </citations>
 </tool>
