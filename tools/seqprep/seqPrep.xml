@@ -1,4 +1,4 @@
-<tool id="seqprep" name="SeqPrep" version="0.2.1">
+<tool id="seqprep" name="SeqPrep" version="0.2.2">
   <description>merge paired end Illumina reads</description>
   <requirements>
     <requirement type="package" version="1.3.2">seqprep</requirement>
@@ -100,7 +100,7 @@
     && zcat -f two.gz > '$two'
     #if $save_discarded
       && zcat -f three.gz > '$three'
-      && zcat -f found.gz > '$four'
+      && zcat -f four.gz > '$four'
     #end if
   ]]></command>
   <inputs>
